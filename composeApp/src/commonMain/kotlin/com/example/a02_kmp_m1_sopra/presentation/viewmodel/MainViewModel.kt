@@ -1,4 +1,4 @@
-package com.example.a02_kmp_m1_sopra.data.presentation.viewmodel
+package com.example.a02_kmp_m1_sopra.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,9 +45,10 @@ class MainViewModel : ViewModel() {
 
     init {
         //loadPhotographers()
+        loadFakeData()
     }
 
-    public suspend fun loadPhotographers() {
+    fun loadPhotographers() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _dataList.value = KtorPhotographersAPI.loadPhotographers()

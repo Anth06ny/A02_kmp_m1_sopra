@@ -1,4 +1,4 @@
-package com.example.a02_kmp_m1_sopra.data.presentation.ui.theme
+package com.example.a02_kmp_m1_sopra.presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF7C4E7E)
