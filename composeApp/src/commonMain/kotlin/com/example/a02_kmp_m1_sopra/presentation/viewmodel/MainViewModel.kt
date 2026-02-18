@@ -45,7 +45,7 @@ class MainViewModel : ViewModel() {
 
     init {
         //loadPhotographers()
-        loadFakeData()
+        //loadFakeData()
     }
 
     fun loadPhotographers() {
