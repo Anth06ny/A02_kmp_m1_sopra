@@ -1,5 +1,6 @@
 package com.example.a02_kmp_m1_sopra.data.remote
 
+import com.example.a02_kmp_m1_sopra.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -34,7 +35,7 @@ suspend fun main() {
 
 object KtorPhotographersAPI {
     private const val API_URL =
-        "https://www.amonteiro.fr/api/photographers?apikey=1234"
+        "https://www.amonteiro.fr/api/photographers?apikey=${BuildConfig.PHOTOGRAPHER_API_KEY}"
 
     //Déclaration du client
     private val client = HttpClient {
