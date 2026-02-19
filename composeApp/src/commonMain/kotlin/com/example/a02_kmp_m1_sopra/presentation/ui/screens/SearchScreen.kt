@@ -81,7 +81,11 @@ fun SearchScreenFullPreview() {
 }
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel() { MainViewModel() }) {
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel = viewModel() { MainViewModel() },
+    onPictureClick: (PhotographersDTO)->Unit = {}
+) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         println("SearchScreen()")
 
@@ -100,7 +104,7 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = v
 
         ) {
             items(list.size) {
-                PictureRowItem(data = list[it])
+                PictureRowItem(data = list[it], onPictureClick = onPictureClick)
             }
         }
 
@@ -169,7 +173,8 @@ fun SearchBar(modifier: Modifier = Modifier, text:String, onValueChange: (String
 }
 
 @Composable //Composable affichant 1 élément
-fun PictureRowItem(modifier: Modifier = Modifier, data: PhotographersDTO) {
+fun PictureRowItem(modifier: Modifier = Modifier, data: PhotographersDTO,
+                   onPictureClick: (PhotographersDTO)->Unit) {
 
     var expended by remember { mutableStateOf(false) }
 
@@ -202,6 +207,9 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PhotographersDTO) {
             modifier = Modifier
                 .heightIn(max = 100.dp)
                 .widthIn(max = 100.dp)
+                .clickable{
+                    onPictureClick(data)
+                }
         )
 
         Column(modifier = Modifier.clickable{ expended = !expended }.fillMaxWidth()

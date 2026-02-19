@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.a02_kmp_m1_sopra.data.remote.MuseumDTO
+import com.example.a02_kmp_m1_sopra.presentation.AppNavigation
 import com.example.a02_kmp_m1_sopra.presentation.ui.screens.SearchScreen
 import com.example.a02_kmp_m1_sopra.presentation.ui.theme.AppTheme
 import org.jetbrains.compose.resources.painterResource
@@ -38,7 +39,7 @@ import org.jetbrains.compose.resources.stringResource
 fun App() {
     AppTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            SearchScreen(modifier = Modifier.padding(innerPadding))
+            AppNavigation(modifier = Modifier.padding(innerPadding))
         }
     }
 }
