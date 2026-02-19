@@ -10,6 +10,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 suspend fun main() {
@@ -44,11 +45,12 @@ class MainViewModel : ViewModel() {
     val errorMessage = _errorMessage.asStateFlow()
 
     init {
-        loadPhotographers()
+        //loadPhotographers()
         //loadFakeData()
     }
 
     fun loadPhotographers() {
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _dataList.value = KtorPhotographersAPI.loadPhotographers()

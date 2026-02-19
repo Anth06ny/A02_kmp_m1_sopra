@@ -17,10 +17,10 @@ import kotlinx.serialization.json.Json
 
 @Serializable //KotlinX impose cette annotation
 data class MuseumDTO(
-    val objectID: Int,
-    val title: String,
-    val artistDisplayName: String,
-    val primaryImage: String,
+    var objectID: Int = 1,
+    val title: String = "",
+    val artistDisplayName: String = "",
+    val primaryImage: String = "",
 )
 
 suspend fun main() {
