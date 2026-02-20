@@ -68,7 +68,7 @@ class KtorPhotographersAPI(val client: HttpClient) : IKtorPhotographerAPI {
 
 class KtorPhotographersFakeAPI() : IKtorPhotographerAPI {
     override suspend fun loadPhotographers(): List<PhotographersDTO> {
-        listOf(
+        return listOf(
             PhotographersDTO(
                 id = 1,
                 stageName = "Bob la Menace",
