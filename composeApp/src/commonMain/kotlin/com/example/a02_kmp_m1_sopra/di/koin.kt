@@ -11,6 +11,7 @@ import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
@@ -20,7 +21,7 @@ import org.koin.dsl.module
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(apiModule, viewModelModule)
+        modules(apiModule, viewModelModule, databaseModule())
     }.koin
 
 // Version pour iOS et Desktop
@@ -61,3 +62,5 @@ val apiFakeModule = module {
 val viewModelModule = module {
     viewModelOf(::MainViewModel)
 }
+
+expect fun databaseModule(): Module

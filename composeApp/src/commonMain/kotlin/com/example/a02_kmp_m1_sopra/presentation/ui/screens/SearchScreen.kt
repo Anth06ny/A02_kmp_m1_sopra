@@ -43,6 +43,7 @@ import coil3.compose.AsyncImage
 import com.example.a02_kmp_m1_sopra.data.remote.PhotographersDTO
 import com.example.a02_kmp_m1_sopra.di.apiFakeModule
 import com.example.a02_kmp_m1_sopra.di.apiModule
+import com.example.a02_kmp_m1_sopra.di.databaseModule
 import com.example.a02_kmp_m1_sopra.di.viewModelModule
 import com.example.a02_kmp_m1_sopra.presentation.ui.theme.AppTheme
 import com.example.a02_kmp_m1_sopra.presentation.viewmodel.MainViewModel
