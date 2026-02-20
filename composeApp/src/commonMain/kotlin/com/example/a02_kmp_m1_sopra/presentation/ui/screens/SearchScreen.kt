@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.a02_kmp_m1_sopra.data.remote.PhotographersDTO
+import com.example.a02_kmp_m1_sopra.di.apiFakeModule
 import com.example.a02_kmp_m1_sopra.di.apiModule
 import com.example.a02_kmp_m1_sopra.di.viewModelModule
 import com.example.a02_kmp_m1_sopra.presentation.ui.theme.AppTheme
@@ -60,7 +61,7 @@ fun SearchScreenEmptyPreview() {
     //Il faut remplacer NomVotreAppliTheme par le thème de votre application
     //Utilisé par exemple dans MainActivity.kt sous setContent {...} val context = LocalContext.current
     KoinApplicationPreview(application = {
-        modules(viewModelModule, apiModule)
+        modules(viewModelModule, apiFakeModule)
     }) {
         AppTheme {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -77,12 +78,12 @@ fun SearchScreenFullPreview() {
     //Il faut remplacer NomVotreAppliTheme par le thème de votre application
     //Utilisé par exemple dans MainActivity.kt sous setContent {...}
     KoinApplicationPreview(application = {
-        modules(viewModelModule, apiModule)
+        modules(viewModelModule, apiFakeModule)
     }) {
         AppTheme {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 val mainViewModel: MainViewModel = koinViewModel()
-                mainViewModel.loadFakeData()
+                mainViewModel.loadPhotographers()
                 SearchScreen(modifier = Modifier.padding(innerPadding), mainViewModel = mainViewModel)
             }
         }

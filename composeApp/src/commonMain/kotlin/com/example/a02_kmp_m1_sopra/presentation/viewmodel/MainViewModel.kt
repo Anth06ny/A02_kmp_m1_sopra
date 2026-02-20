@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.a02_kmp_m1_sopra.data.remote.KtorPhotographersAPI
 import com.example.a02_kmp_m1_sopra.data.remote.PhotographersDTO
 import com.example.a02_kmp_m1_sopra.di.initKoin
+import com.example.a02_kmp_m1_sopra.domaine.remote.IKtorPhotographerAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -37,7 +38,7 @@ suspend fun main() {
     delay(10000)
 }
 
-class MainViewModel(val photographersAPI: KtorPhotographersAPI) : ViewModel() {
+class MainViewModel(val photographersAPI: IKtorPhotographerAPI) : ViewModel() {
 
     private val _dataList = MutableStateFlow(emptyList<PhotographersDTO>())
     val dataList = _dataList.asStateFlow()

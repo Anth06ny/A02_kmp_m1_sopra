@@ -1,6 +1,8 @@
 package com.example.a02_kmp_m1_sopra.di
 
 import com.example.a02_kmp_m1_sopra.data.remote.KtorPhotographersAPI
+import com.example.a02_kmp_m1_sopra.data.remote.KtorPhotographersFakeAPI
+import com.example.a02_kmp_m1_sopra.domaine.remote.IKtorPhotographerAPI
 import com.example.a02_kmp_m1_sopra.presentation.viewmodel.MainViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
@@ -40,7 +42,20 @@ val apiModule = module {
        }
    }
 
-    singleOf(::KtorPhotographersAPI)
+    single<IKtorPhotographerAPI>{
+        KtorPhotographersAPI(get())
+    }
+
+    //singleOf<IKtorPhotographerAPI>(::KtorPhotographersAPI)
+}
+
+val apiFakeModule = module {
+
+    single<IKtorPhotographerAPI>{
+        KtorPhotographersFakeAPI()
+    }
+
+    //singleOf<IKtorPhotographerAPI>(::KtorPhotographersAPI)
 }
 
 val viewModelModule = module {
