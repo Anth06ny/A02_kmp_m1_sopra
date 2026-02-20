@@ -98,9 +98,17 @@ kotlin {
             implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
 
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.+")
+
+            //Injection dépendance KOIN
+            implementation("io.insert-koin:koin-compose:4.1.+")
+            implementation("io.insert-koin:koin-compose-viewmodel:4.1.+")
+            implementation("io.insert-koin:koin-compose-viewmodel-navigation:4.1.+")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+//Si besoin du contexte
+            implementation("io.insert-koin:koin-android:4.1.+")
+
 
         }
         jvmMain.dependencies {

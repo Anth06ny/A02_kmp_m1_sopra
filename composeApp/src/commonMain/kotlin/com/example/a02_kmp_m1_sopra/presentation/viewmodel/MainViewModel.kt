@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a02_kmp_m1_sopra.data.remote.KtorPhotographersAPI
 import com.example.a02_kmp_m1_sopra.data.remote.PhotographersDTO
+import com.example.a02_kmp_m1_sopra.di.initKoin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -14,7 +15,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 suspend fun main() {
-    val viewModel = MainViewModel()
+
+    val koin = initKoin()
+
+    val viewModel = koin.get<MainViewModel>()
     viewModel.loadPhotographers()
 
     CoroutineScope(Dispatchers.Default).launch {
@@ -33,7 +37,7 @@ suspend fun main() {
     delay(10000)
 }
 
-class MainViewModel : ViewModel() {
+class MainViewModel(val photographersAPI: KtorPhotographersAPI) : ViewModel() {
 
     private val _dataList = MutableStateFlow(emptyList<PhotographersDTO>())
     val dataList = _dataList.asStateFlow()
@@ -53,7 +57,7 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _dataList.value = KtorPhotographersAPI.loadPhotographers()
+                _dataList.value = photographersAPI.loadPhotographers()
             } catch (e: Exception) {
                 e.printStackTrace()
                 _errorMessage.value = e.message ?: "Une erreur est survenue"

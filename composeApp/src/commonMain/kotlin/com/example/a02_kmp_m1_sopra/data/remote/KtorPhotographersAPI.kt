@@ -1,6 +1,7 @@
 package com.example.a02_kmp_m1_sopra.data.remote
 
 import com.example.a02_kmp_m1_sopra.BuildConfig
+import com.example.a02_kmp_m1_sopra.di.initKoin
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -16,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.core.context.startKoin
 
 @Serializable //KotlinX impose cette annotation
 data class PhotographersDTO(
@@ -27,28 +29,21 @@ data class PhotographersDTO(
 )
 
 suspend fun main() {
-    println(KtorPhotographersAPI.loadPhotographers().joinToString(separator = "\n\n"))
+
+    val koin = initKoin()
+
+    val photographersAPI = koin.get<KtorPhotographersAPI>()
+
+    println(photographersAPI.loadPhotographers().joinToString(separator = "\n\n"))
 
     //Pour que le programme s'arrête, inutile sur Android
-    KtorPhotographersAPI.close()
+    photographersAPI.close()
 }
 
-object KtorPhotographersAPI {
-    private const val API_URL =
-        "https://www.amonteiro.fr/api/photographers?apikey=${BuildConfig.PHOTOGRAPHER_API_KEY}"
-
-    //Déclaration du client
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
-        }
-        install(HttpTimeout) {
-            requestTimeoutMillis = 5000
-        }
-        //Proxy
-        //engine {
-        //    proxy = ProxyBuilder.http("monproxy:1234")
-        //}
+class KtorPhotographersAPI(val client: HttpClient) {
+    companion object {
+        private const val API_URL =
+            "https://www.amonteiro.fr/api/photographers?apikey=${BuildConfig.PHOTOGRAPHER_API_KEY}"
     }
 
     //GET

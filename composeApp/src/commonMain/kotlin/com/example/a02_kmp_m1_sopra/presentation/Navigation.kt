@@ -13,6 +13,7 @@ import com.example.a02_kmp_m1_sopra.presentation.ui.screens.PhotographerScreen
 import com.example.a02_kmp_m1_sopra.presentation.ui.screens.SearchScreen
 import com.example.a02_kmp_m1_sopra.presentation.viewmodel.MainViewModel
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 class Routes {
     @Serializable
@@ -29,7 +30,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val navHostController : NavHostController = rememberNavController()
     //viewModel() en dehors de NavHost lie à l'Activité donc partagé entre les écrans
     //viewModel() dans le NavHost lié à la stack d'écran. Une instance par stack d'écran
-    val mainViewModel  = viewModel { MainViewModel() }
+    val mainViewModel  = koinViewModel<MainViewModel>()
 
     //Import version avec Composable
     NavHost(

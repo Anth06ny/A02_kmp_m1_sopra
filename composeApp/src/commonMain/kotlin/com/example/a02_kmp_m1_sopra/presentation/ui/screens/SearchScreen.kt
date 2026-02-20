@@ -24,10 +24,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,13 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.a02_kmp_m1_sopra.data.remote.PhotographersDTO
+import com.example.a02_kmp_m1_sopra.di.apiModule
+import com.example.a02_kmp_m1_sopra.di.viewModelModule
 import com.example.a02_kmp_m1_sopra.presentation.ui.theme.AppTheme
 import com.example.a02_kmp_m1_sopra.presentation.viewmodel.MainViewModel
 import org.jetbrains.compose.resources.painterResource
-import kotlin.math.exp
+import org.koin.compose.KoinApplicationPreview
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -56,10 +58,15 @@ import kotlin.math.exp
 @Composable
 fun SearchScreenEmptyPreview() {
     //Il faut remplacer NomVotreAppliTheme par le thème de votre application
-    //Utilisé par exemple dans MainActivity.kt sous setContent {...}
-    AppTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            SearchScreen(modifier = Modifier.padding(innerPadding))
+    //Utilisé par exemple dans MainActivity.kt sous setContent {...} val context = LocalContext.current
+    KoinApplicationPreview(application = {
+        modules(viewModelModule, apiModule)
+    }) {
+        AppTheme {
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val mainViewModel: MainViewModel = koinViewModel()
+                SearchScreen(modifier = Modifier.padding(innerPadding), mainViewModel = mainViewModel)
+            }
         }
     }
 }
@@ -69,13 +76,15 @@ fun SearchScreenEmptyPreview() {
 fun SearchScreenFullPreview() {
     //Il faut remplacer NomVotreAppliTheme par le thème de votre application
     //Utilisé par exemple dans MainActivity.kt sous setContent {...}
-    AppTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-            val mainViewModel = MainViewModel()
-            mainViewModel.loadFakeData()
-
-            SearchScreen(modifier = Modifier.padding(innerPadding), mainViewModel = mainViewModel)
+    KoinApplicationPreview(application = {
+        modules(viewModelModule, apiModule)
+    }) {
+        AppTheme {
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val mainViewModel: MainViewModel = koinViewModel()
+                mainViewModel.loadFakeData()
+                SearchScreen(modifier = Modifier.padding(innerPadding), mainViewModel = mainViewModel)
+            }
         }
     }
 }
@@ -83,13 +92,13 @@ fun SearchScreenFullPreview() {
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    mainViewModel: MainViewModel = viewModel() { MainViewModel() },
-    onPictureClick: (PhotographersDTO)->Unit = {}
+    mainViewModel: MainViewModel,
+    onPictureClick: (PhotographersDTO) -> Unit = {}
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         println("SearchScreen()")
 
-        var searchText by remember { mutableStateOf("")    }
+        var searchText by remember { mutableStateOf("") }
 
         SearchBar(text = searchText) {
             searchText = it
@@ -110,7 +119,7 @@ fun SearchScreen(
 
         Row {
             Button(
-                onClick = { searchText = ""},
+                onClick = { searchText = "" },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding
             ) {
                 Icon(
@@ -140,7 +149,7 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier, text:String, onValueChange: (String) -> Unit) {
+fun SearchBar(modifier: Modifier = Modifier, text: String, onValueChange: (String) -> Unit) {
 
 
     TextField(
@@ -173,8 +182,10 @@ fun SearchBar(modifier: Modifier = Modifier, text:String, onValueChange: (String
 }
 
 @Composable //Composable affichant 1 élément
-fun PictureRowItem(modifier: Modifier = Modifier, data: PhotographersDTO,
-                   onPictureClick: (PhotographersDTO)->Unit) {
+fun PictureRowItem(
+    modifier: Modifier = Modifier, data: PhotographersDTO,
+    onPictureClick: (PhotographersDTO) -> Unit
+) {
 
     var expended by remember { mutableStateOf(false) }
 
@@ -207,17 +218,18 @@ fun PictureRowItem(modifier: Modifier = Modifier, data: PhotographersDTO,
             modifier = Modifier
                 .heightIn(max = 100.dp)
                 .widthIn(max = 100.dp)
-                .clickable{
+                .clickable {
                     onPictureClick(data)
                 }
         )
 
-        Column(modifier = Modifier.clickable{ expended = !expended }.fillMaxWidth()
+        Column(
+            modifier = Modifier.clickable { expended = !expended }.fillMaxWidth()
 
         ) {
             Text(data.stageName, fontSize = 20.sp)
-            val text = if(expended) data.story else (data.story.take(20) + "...")
-            Text( text, fontSize = 14.sp, modifier = Modifier.animateContentSize())
+            val text = if (expended) data.story else (data.story.take(20) + "...")
+            Text(text, fontSize = 14.sp, modifier = Modifier.animateContentSize())
         }
 
     }
