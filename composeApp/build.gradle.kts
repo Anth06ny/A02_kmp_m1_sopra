@@ -158,8 +158,21 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.example.a02_kmp_m1_sopra"
+            packageName = "CoursKMP"
             packageVersion = "1.0.0"
+            description = "Une application de photographes"
+            vendor = "MonEntreprise"
+
+            windows {
+                shortcut = true
+                menu = true
+            }
+            macOS {
+                dockName = "PhotographApp"
+            }
+            linux {
+                shortcut = true
+            }
         }
     }
 }
